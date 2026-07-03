@@ -1,6 +1,17 @@
 # Zulfiqar Group - Umrah Voucher & Package Builder
 
-Responsive React/Vite app for creating Umrah hotel vouchers and package flyers with live previews, LocalStorage templates, PNG/PDF export, and print support.
+Responsive React/Vite app for creating premium Zulfiqar Group Umrah package flyers, hotel rate sheets, and flight ticket cards with live previews, dropdown helpers, LocalStorage templates, PNG/PDF export, and print support.
+
+## Features
+
+- 5 selectable design styles
+- Brand color palette inspired by Zulfiqar Group emerald, gold, cream, marble, and navy
+- Adjustable uploaded logo shape and fit
+- Umrah package builder
+- Hotel rate builder
+- Flight ticket builder
+- WhatsApp, Instagram, Facebook, Story, and A4 export presets
+- Save, load, duplicate, and delete templates in LocalStorage
 
 ## Run locally
 
