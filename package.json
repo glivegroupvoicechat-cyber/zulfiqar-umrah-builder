@@ -1,0 +1,26 @@
+{
+  "name": "zulfiqar-umrah-builder",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "latest",
+    "@tailwindcss/vite": "latest",
+    "lucide-react": "latest",
+    "html2canvas": "latest",
+    "jspdf": "latest"
+  },
+  "devDependencies": {
+    "gh-pages": "latest"
+  }
+}
