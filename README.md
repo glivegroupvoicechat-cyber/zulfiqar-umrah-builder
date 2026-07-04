@@ -7,6 +7,7 @@ Responsive React/Vite app for creating premium Zulfiqar Group Umrah package flye
 - 5 selectable design styles
 - Brand color palette inspired by Zulfiqar Group emerald, gold, cream, marble, and navy
 - Adjustable uploaded logo shape and fit
+- Upload QR code, voucher background image, airline logo, and Makkah/Madinah hotel photos
 - Umrah package builder
 - Hotel rate builder
 - Flight ticket builder
