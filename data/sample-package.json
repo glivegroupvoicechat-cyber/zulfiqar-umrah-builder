@@ -1,0 +1,43 @@
+{
+  "version": 3,
+  "fields": {
+    "customerName": "Ayesha Khan",
+    "familyHead": "Muhammad Khan",
+    "bookingDate": "2026-08-07",
+    "voucherDate": "2026-08-08",
+    "companyName": "ZULFIQAR GROUP",
+    "whatsapp": "",
+    "phone": "",
+    "email": "",
+    "website": "",
+    "officeAddress": "",
+    "preparedBy": "Country Manager Muhammad Mubeen",
+    "footerText": "Thank you for choosing Zulfiqar Group.",
+    "packageInclusions": "Return air ticket\nUmrah visa included\nHotel accommodation\nGround transport",
+    "logoUrl": "assets/zulfiqar-logo.png",
+    "logoData": "",
+    "quoteNumber": "ZUG-20260807-1001",
+    "quoteGeneratedAt": "2026-08-07T10:00:00.000Z",
+    "viewMode": "company",
+    "adults": "2",
+    "children": "1",
+    "infants": "0",
+    "beds": "3",
+    "exchangeRate": "77.00",
+    "visaRequired": true,
+    "visaRate": "600",
+    "profit": "25000",
+    "commission": "5000",
+    "discount": "0"
+  },
+  "rows": {
+    "flight": [{"airline": "Saudi Airlines", "airlineLogo": "", "route": "LHE - JED - LHE", "rate": "177000"}],
+    "hotel": [
+      {"name": "Makkah Tower Hotel", "city": "Makkah", "roomType": "3", "rooms": "1", "checkIn": "2026-10-10", "checkOut": "2026-10-15", "rate": "500"},
+      {"name": "Madinah Plaza", "city": "Madinah", "roomType": "3", "rooms": "1", "checkIn": "2026-10-15", "checkOut": "2026-10-19", "rate": "420"}
+    ],
+    "transport": [{"transportType": "Private Transport", "route": "Jeddah Airport - Makkah", "vehicle": "GMC", "rate": "450"}],
+    "ziyarat": [{"service": "Makkah Ziyarat", "rate": "220"}],
+    "charge": [{"description": "Service fee", "rate": "3500"}]
+  }
+}

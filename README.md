@@ -1,38 +1,27 @@
-# Zulfiqar Group - Umrah Voucher & Package Builder
+# Zulfiqar Group - Umrah Package Calculator
 
-Responsive React/Vite app for creating premium Zulfiqar Group Umrah package flyers, hotel rate sheets, and flight ticket cards with live previews, dropdown helpers, LocalStorage templates, PNG/PDF export, and print support.
+A responsive, static Umrah quotation calculator built with HTML, CSS, and vanilla JavaScript. It needs no build step, server, account, or third-party dependency.
 
-## Features
+## Use
 
-- 5 selectable design styles
-- Brand color palette inspired by Zulfiqar Group emerald, gold, cream, marble, and navy
-- Adjustable uploaded logo shape and fit
-- Upload QR code, voucher background image, airline logo, and Makkah/Madinah hotel photos
-- Umrah package builder
-- Hotel rate builder
-- Flight ticket builder
-- WhatsApp, Instagram, Facebook, Story, and A4 export presets
-- Save, load, duplicate, and delete templates in LocalStorage
+Open `index.html` in a modern browser, or publish this folder through GitHub Pages. Use **Download JSON** to save a package and **Load JSON** to restore it. `data/sample-package.json` is a ready-made example.
 
-## Run locally
+The print buttons use the browser's native print dialog with an A4 layout. Choose "Save as PDF" there if a PDF file is needed.
 
-```bash
-npm install
-npm run dev
-```
+## Company Mode and Client Mode
 
-## Build
+- **Company Mode** is the internal workspace. It shows all costs, currency conversion, profit, commission, discounts, and the complete package calculation.
+- **Client Mode** creates a customer quotation with the airline, visa status, hotels, transport type and route, inclusions, any discount, and only the final payable amount. Internal prices and margins are not shown.
 
-```bash
-npm run build
-```
+Use **Print / Save Client Quote** while in Client Mode to create the customer PDF. Share that PDF with the customer rather than the live calculator link.
 
-## GitHub Pages
+## Included features
 
-The repository includes a GitHub Actions workflow that builds the Vite app and publishes `dist` to GitHub Pages.
-
-1. Push the project to GitHub.
-2. In repository settings, enable Pages with GitHub Actions as the source.
-3. Push to `main`.
-
-If your repository name is different, update `base` in `vite.config.js`.
+- Live passenger, room-night, SAR-to-PKR, and full package calculations with an editable exchange rate
+- Unlimited flights, hotels, private transport, ziyarat, and extra-charge rows
+- Room capacity warnings and check-in/check-out validation
+- Configurable company profile: logo URL/upload, company and contact details, prepared-by name, and footer text
+- Separate internal Company Mode and client-safe Client Mode
+- Bus and private-transport quotation cards with the Umrah route
+- A4 Company Sheet and client quotation layouts, including print-to-PDF support
+- Responsive layout, browser-local persistence, and JSON save/load
