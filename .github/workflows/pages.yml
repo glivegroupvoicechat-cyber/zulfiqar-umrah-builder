@@ -19,7 +19,7 @@ jobs:
         run: |
           rm -rf dist
           mkdir -p dist
-          cp index.html style.css script.js dist/
+          cp index.html style.css script.js client-enhancements.js dist/
           cp -R assets dist/assets
           if [ -d data ]; then cp -R data dist/data; fi
           touch dist/.nojekyll
