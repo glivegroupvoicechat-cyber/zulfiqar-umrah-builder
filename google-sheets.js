@@ -1,6 +1,6 @@
 /* Zulfiqar Group - Google Sheets quotation sync */
 (() => {
-  const ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbw5Q0x6EqnXE1Z9HsxRYik99RLtB7ERReKZKA5Q3XwaSXXptAbVOn8-3D4_FUz-HKsY/exec';
   const form = document.querySelector('#calculator');
   if (!form) return;
   const field = name => form.elements[name];
