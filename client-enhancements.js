@@ -3,6 +3,9 @@
   const form = document.querySelector('#calculator');
   const clientBox = document.querySelector('#clientQuotation');
   if (!form || !clientBox) return;
+  const style = document.createElement('style');
+  style.textContent = `.client-share-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.client-share-actions .button{min-width:118px;text-align:center}.whatsapp-button{background:#176b3a!important;border-color:#176b3a!important}.per-pax-box{margin-top:10px;padding-top:9px;border-top:1px solid rgba(200,162,58,.35)}.per-pax-box small{display:block;color:#66788a;text-transform:uppercase;letter-spacing:.65px;font-weight:800}.per-pax-box strong{display:block;color:#8c6810;font:700 1.2rem Georgia,serif;margin-top:2px}.client-contact{margin-top:7px!important;color:#52677a!important}.client-contact strong{color:#19324d}.client-mobile-field{grid-column:span 2}`;
+  document.head.appendChild(style);
   const money = value => new Intl.NumberFormat('en-PK', { maximumFractionDigits: 0 }).format(Math.round(Number(value) || 0));
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   const field = name => form.elements[name];
@@ -34,14 +37,7 @@
     const hotels = rows('hotel').filter(x => x.name || x.checkIn || x.checkOut || Number(x.rate));
     const transport = rows('transport').filter(x => x.route || x.vehicle || Number(x.rate));
     const ziyarat = rows('ziyarat').filter(x => x.service || Number(x.rate));
-    const defaults = [
-      flights.length ? 'Return air ticket' : '',
-      field('visaRequired')?.checked ? 'Umrah visa included' : '',
-      hotels.length ? 'Hotel accommodation' : '',
-      transport.length ? 'Ground transport' : '',
-      ziyarat.some(x => /makkah/i.test(x.service)) ? 'Makkah Ziyarat' : '',
-      ziyarat.some(x => /madinah/i.test(x.service)) ? 'Madinah Ziyarat' : ''
-    ].filter(Boolean);
+    const defaults = [flights.length ? 'Return air ticket' : '', field('visaRequired')?.checked ? 'Umrah visa included' : '', hotels.length ? 'Hotel accommodation' : '', transport.length ? 'Ground transport' : '', ziyarat.some(x => /makkah/i.test(x.service)) ? 'Makkah Ziyarat' : '', ziyarat.some(x => /madinah/i.test(x.service)) ? 'Madinah Ziyarat' : ''].filter(Boolean);
     return [...new Set([...defaults, ...custom])];
   }
 
