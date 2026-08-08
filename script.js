@@ -192,7 +192,9 @@ function restore(data) {
   });
   Object.keys(lists).forEach(type => {
     document.querySelector(lists[type]).innerHTML = '';
-    (data.rows[type] || []).forEach(value => addRow(type, value));
+    const savedRows = data.rows[type] || [];
+    savedRows.forEach(value => addRow(type, value));
+    if (!savedRows.length && (type === 'flight' || type === 'hotel')) addRow(type);
   });
   ensureQuoteDetails();
   setMode(field('viewMode').value, false);
