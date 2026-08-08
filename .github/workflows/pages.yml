@@ -15,11 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm install
-      - run: GITHUB_PAGES=true npm run build
+      - name: Build static calculator
+        run: |
+          rm -rf dist
+          mkdir -p dist
+          cp index.html style.css script.js dist/
+          cp -R assets dist/assets
+          if [ -d data ]; then cp -R data dist/data; fi
+          touch dist/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
