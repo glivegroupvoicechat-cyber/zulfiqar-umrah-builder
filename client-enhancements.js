@@ -4,10 +4,10 @@
   const clientBox = document.querySelector('#clientQuotation');
   if (!form || !clientBox) return;
   const style = document.createElement('style');
-  style.textContent = `.client-share-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.client-share-actions .button{min-width:118px;text-align:center}.whatsapp-button{background:#176b3a!important;border-color:#176b3a!important}.per-pax-box{margin-top:10px;padding-top:9px;border-top:1px solid rgba(200,162,58,.35)}.per-pax-box small{display:block;color:#66788a;text-transform:uppercase;letter-spacing:.65px;font-weight:800}.per-pax-box strong{display:block;color:#8c6810;font:700 1.2rem Georgia,serif;margin-top:2px}.client-contact{margin-top:7px!important;color:#52677a!important}.client-contact strong{color:#19324d}.client-mobile-field{grid-column:span 2}`;
+  style.textContent = `.client-share-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.client-share-actions .button{min-width:118px;text-align:center}.whatsapp-button{background:#176b3a!important;border-color:#176b3a!important}.per-pax-box{margin-top:10px;padding-top:9px;border-top:1px solid rgba(200,162,58,.35)}.per-pax-box small{display:block;color:#66788a;text-transform:uppercase;letter-spacing:.65px;font-weight:800}.per-pax-box strong{display:block;color:#8c6810;font:700 1.2rem Georgia,serif;margin-top:2px}.client-contact{margin-top:7px!important;color:#52677a!important}.client-contact strong{color:#19324d}.client-mobile-field{grid-column:span 2}.client-company-contact{margin-top:12px;padding:11px 14px;border:1px solid #d7dfe6;border-radius:8px;background:#fbfaf5;color:#52677a;font-size:.86rem;line-height:1.65}.client-company-contact strong{color:#19324d}.client-company-contact .company-line{display:block}`;
   document.head.appendChild(style);
   const money = value => new Intl.NumberFormat('en-PK', { maximumFractionDigits: 0 }).format(Math.round(Number(value) || 0));
-  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  const esc = value => String(value ?? '').replace(/[&<>\"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '\"':'&quot;', "'":'&#39;' }[c]));
   const field = name => form.elements[name];
   const pkr = value => `PKR ${money(value)}`;
   const mobileKey = 'zulfiqar-client-mobile';
@@ -44,6 +44,10 @@
   function quoteText() {
     const name = field('customerName')?.value.trim() || 'Esteemed Guest';
     const mobile = field('clientMobile')?.value.trim() || '';
+    const company = field('companyName')?.value.trim() || 'ZULFIQAR GROUP';
+    const companyMobile = field('whatsapp')?.value.trim() || '';
+    const email = field('email')?.value.trim() || '';
+    const address = field('officeAddress')?.value.trim() || '';
     const pax = Number(field('adults')?.value || 0) + Number(field('children')?.value || 0) + Number(field('infants')?.value || 0);
     const grand = document.querySelector('#grandTotal')?.textContent || 'PKR 0';
     const grandNumber = parseFloat(grand.replace(/[^0-9.]/g, '')) || 0;
@@ -51,7 +55,7 @@
     const hotels = rows('hotel').filter(x => x.name || x.city).map(x => `${x.city || 'Hotel'}: ${x.name || 'Hotel'}${x.nights ? ` (${x.nights} nights)` : ''}`).join('\n');
     const flight = rows('flight').filter(x => x.airline || x.route).map(x => `${x.airline || 'Airline'} — ${x.route || 'Route TBC'}`).join('\n');
     const inc = packageInclusions().map(x => `✓ ${x}`).join('\n');
-    return `🕋 ZULFIQAR GROUP — UMRAH QUOTATION\n\nClient: ${name}${mobile ? `\nMobile: ${mobile}` : ''}\nPassengers: ${pax || 'To be confirmed'}\n\n✈️ FLIGHT\n${flight || 'To be confirmed'}\n\n🏨 HOTELS\n${hotels || 'To be confirmed'}\n\n✅ INCLUSIONS\n${inc || 'To be confirmed'}\n\n💰 FINAL TOTAL: ${grand}\n💵 PER PAX: ${per}\n\nThank you for choosing Zulfiqar Group.`;
+    return `🕋 ${company} — UMRAH QUOTATION\n${companyMobile ? `WhatsApp: ${companyMobile}\n` : ''}${email ? `Email: ${email}\n` : ''}${address ? `Office: ${address}\n` : ''}\nClient: ${name}${mobile ? `\nMobile: ${mobile}` : ''}\nPassengers: ${pax || 'To be confirmed'}\n\n✈️ FLIGHT\n${flight || 'To be confirmed'}\n\n🏨 HOTELS\n${hotels || 'To be confirmed'}\n\n✅ INCLUSIONS\n${inc || 'To be confirmed'}\n\n💰 FINAL TOTAL: ${grand}\n💵 PER PAX: ${per}\n\nThank you for choosing ${company}.`;
   }
 
   function whatsapp() {
@@ -100,7 +104,20 @@
       contact.innerHTML = `<strong>Client:</strong> ${esc(field('customerName')?.value.trim() || 'Esteemed Guest')}${mobile ? ` &nbsp;·&nbsp; <strong>Mobile:</strong> ${esc(mobile)}` : ''}`;
       heroMain.appendChild(contact);
     }
+    clientBox.querySelector('.client-company-contact')?.remove();
+    const company = field('companyName')?.value.trim() || 'ZULFIQAR GROUP';
+    const companyMobile = field('whatsapp')?.value.trim() || '';
+    const email = field('email')?.value.trim() || '';
+    const address = field('officeAddress')?.value.trim() || '';
+    const phone = field('phone')?.value.trim() || '';
+    const website = field('website')?.value.trim() || '';
     const footer = clientBox.querySelector('.client-footer');
+    if (footer) {
+      const contactBox = document.createElement('div');
+      contactBox.className = 'client-company-contact';
+      contactBox.innerHTML = `<strong>${esc(company)}</strong>${companyMobile ? `<span class="company-line">WhatsApp: ${esc(companyMobile)}</span>` : ''}${phone ? `<span class="company-line">Phone: ${esc(phone)}</span>` : ''}${email ? `<span class="company-line">Email: ${esc(email)}</span>` : ''}${website ? `<span class="company-line">Website: ${esc(website)}</span>` : ''}${address ? `<span class="company-line">Office: ${esc(address)}</span>` : ''}`;
+      footer.insertBefore(contactBox, footer.firstChild);
+    }
     if (footer && !footer.querySelector('.client-share-actions')) {
       footer.querySelector('#clientPrintButton')?.remove();
       const actions = document.createElement('div');
