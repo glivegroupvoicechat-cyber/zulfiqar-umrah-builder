@@ -4,12 +4,13 @@
   const clientBox = document.querySelector('#clientQuotation');
   if (!form || !clientBox) return;
   const style = document.createElement('style');
-  style.textContent = `.client-share-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.client-share-actions .button{min-width:118px;text-align:center}.whatsapp-button{background:#176b3a!important;border-color:#176b3a!important}.per-pax-box{margin-top:10px;padding-top:9px;border-top:1px solid rgba(200,162,58,.35)}.per-pax-box small{display:block;color:#66788a;text-transform:uppercase;letter-spacing:.65px;font-weight:800}.per-pax-box strong{display:block;color:#8c6810;font:700 1.2rem Georgia,serif;margin-top:2px}.client-contact{margin-top:7px!important;color:#52677a!important}.client-contact strong{color:#19324d}.client-mobile-field{grid-column:span 2}.client-company-contact{margin-top:12px;padding:11px 14px;border:1px solid #d7dfe6;border-radius:8px;background:#fbfaf5;color:#52677a;font-size:.86rem;line-height:1.65}.client-company-contact strong{color:#19324d}.client-company-contact .company-line{display:block}.client-accommodation-detail{margin-top:4px!important;color:#52677a!important}.client-accommodation-detail strong{color:#19324d}`;
+  style.textContent = `.client-share-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.client-share-actions .button{min-width:118px;text-align:center}.whatsapp-button{background:#176b3a!important;border-color:#176b3a!important}.per-pax-box{margin-top:10px;padding-top:9px;border-top:1px solid rgba(200,162,58,.35)}.per-pax-box small{display:block;color:#66788a;text-transform:uppercase;letter-spacing:.65px;font-weight:800}.per-pax-box strong{display:block;color:#8c6810;font:700 1.2rem Georgia,serif;margin-top:2px}.client-contact{margin-top:7px!important;color:#52677a!important}.client-contact strong{color:#19324d}.client-mobile-field{grid-column:span 2}.client-company-contact{margin-top:12px;padding:11px 14px;border:1px solid #d7dfe6;border-radius:8px;background:#fbfaf5;color:#52677a;font-size:.86rem;line-height:1.65}.client-company-contact strong{color:#19324d}.client-company-contact .company-line{display:block}.client-accommodation-detail{margin-top:4px!important;color:#52677a!important}.client-accommodation-detail strong{color:#19324d}.client-hotel-rate{margin-top:5px!important;color:#8c6810!important;font-weight:700}`;
   document.head.appendChild(style);
   const money = value => new Intl.NumberFormat('en-PK', { maximumFractionDigits: 0 }).format(Math.round(Number(value) || 0));
   const esc = value => String(value ?? '').replace(/[&<>\"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '\"':'&quot;', "'":'&#39;' }[c]));
   const field = name => form.elements[name];
   const pkr = value => `PKR ${money(value)}`;
+  const sar = value => `SAR ${money(value)}`;
   const mobileKey = 'zulfiqar-client-mobile';
   const roomTypeLabel = value => ({ 5:'Quint sharing', 4:'Quad sharing', 3:'Triple sharing', 2:'Double sharing', 1:'Single room' }[Number(value)] || 'Room type to be confirmed');
 
@@ -42,6 +43,14 @@
     return [...new Set([...defaults, ...custom])];
   }
 
+  function hotelSharingDetails(x, pax) {
+    const capacity = Number(x.roomType) || 0;
+    const rooms = Number(x.rooms) || (capacity && pax ? Math.ceil(pax / capacity) : 0);
+    const roomRate = Number(x.rate) || 0;
+    const perPersonNight = capacity ? roomRate / capacity : 0;
+    return `${roomTypeLabel(x.roomType)} — ${rooms} room(s) — ${x.nights || 0} night(s) — ${sar(perPersonNight)} per person/night`;
+  }
+
   function quoteText() {
     const name = field('customerName')?.value.trim() || 'Esteemed Guest';
     const mobile = field('clientMobile')?.value.trim() || '';
@@ -53,7 +62,7 @@
     const grand = document.querySelector('#grandTotal')?.textContent || 'PKR 0';
     const grandNumber = parseFloat(grand.replace(/[^0-9.]/g, '')) || 0;
     const per = pax ? pkr(grandNumber / pax) : 'PKR 0';
-    const hotels = rows('hotel').filter(x => x.name || x.city).map(x => `${x.city || 'Hotel'}: ${x.name || 'Hotel'} — ${roomTypeLabel(x.roomType)} — ${x.nights || 0} night(s)`).join('\n');
+    const hotels = rows('hotel').filter(x => x.name || x.city).map(x => `${x.city || 'Hotel'}: ${x.name || 'Hotel'} — ${hotelSharingDetails(x, pax)}`).join('\n');
     const flight = rows('flight').filter(x => x.airline || x.route).map(x => `${x.airline || 'Airline'} — ${x.route || 'Route TBC'}`).join('\n');
     const inc = packageInclusions().map(x => `✓ ${x}`).join('\n');
     return `🕋 ${company} — UMRAH QUOTATION\n${companyMobile ? `WhatsApp: ${companyMobile}\n` : ''}${email ? `Email: ${email}\n` : ''}${address ? `Office: ${address}\n` : ''}\nClient: ${name}${mobile ? `\nMobile: ${mobile}` : ''}\nPassengers: ${pax || 'To be confirmed'}\n\n✈️ FLIGHT\n${flight || 'To be confirmed'}\n\n🏨 ACCOMMODATION\n${hotels || 'To be confirmed'}\n\n✅ INCLUSIONS\n${inc || 'To be confirmed'}\n\n💰 FINAL TOTAL: ${grand}\n💵 PER PAX: ${per}\n\nThank you for choosing ${company}.`;
@@ -87,13 +96,14 @@
     const grid = section.querySelector('.client-grid');
     if (!grid) return;
     if (!hotels.length) return;
+    const pax = Number(field('adults')?.value || 0) + Number(field('children')?.value || 0) + Number(field('infants')?.value || 0);
     const cards = [...grid.querySelectorAll('.client-item')];
     hotels.forEach((hotel, index) => {
       const card = cards[index];
       if (!card) return;
       const content = card.querySelector('div:last-child') || card;
       const name = hotel.name || `${hotel.city || 'Hotel'} hotel`;
-      content.innerHTML = `<h3>${esc(name)}</h3><p class="client-accommodation-detail"><strong>${esc(hotel.city || 'Hotel')}</strong> &middot; ${esc(roomTypeLabel(hotel.roomType))} &middot; ${esc(String(hotel.nights || 0))} night(s)</p>`;
+      content.innerHTML = `<h3>${esc(name)}</h3><p class="client-accommodation-detail"><strong>${esc(hotel.city || 'Hotel')}</strong> · ${esc(hotelSharingDetails(hotel, pax))}</p>`;
     });
     section.querySelectorAll('p').forEach(p => {
       if (/\d{1,2}-[A-Za-z]{3}-\d{4}|\d{1,2}\/\d{1,2}\/\d{4}|To be confirmed\s*[–-]\s*To be confirmed/i.test(p.textContent)) p.remove();
@@ -101,7 +111,7 @@
     const meta = clientBox.querySelector('.client-meta');
     if (meta && /Travel period/i.test(meta.textContent)) {
       const quoteNo = field('quoteNumber')?.value || '';
-      meta.innerHTML = `<b>Quote no:</b> ${esc(quoteNo)}<br><b>Passengers:</b> ${esc(String((Number(field('adults')?.value || 0) + Number(field('children')?.value || 0) + Number(field('infants')?.value || 0)) || 'To be confirmed'))}`;
+      meta.innerHTML = `<b>Quote no:</b> ${esc(quoteNo)}<br><b>Passengers:</b> ${esc(String(pax || 'To be confirmed'))}`;
     }
   }
 
@@ -154,11 +164,7 @@
     }
   }
 
-  function refresh() {
-    addClientMobileField();
-    setTimeout(enhanceClientQuotation, 0);
-  }
-
+  function refresh() { addClientMobileField(); setTimeout(enhanceClientQuotation, 0); }
   document.addEventListener('click', event => {
     const action = event.target.closest('[data-client-action]')?.dataset.clientAction;
     if (!action) return;
